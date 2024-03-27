@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import NavigationBar from "@/components/navigation-bar";
 import { cn } from "@/lib/utils";
+import Providers from "@/components/providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,12 +20,16 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body className={cn(inter.className, "min-h-screen flex flex-col p-4")}>
-          <NavigationBar />
-          <div className="flex-1">{children}</div>
-        </body>
-      </html>
+      <Providers>
+        <html lang="en">
+          <body
+            className={cn(inter.className, "min-h-screen flex flex-col p-4")}
+          >
+            <NavigationBar />
+            <div className="flex-1">{children}</div>
+          </body>
+        </html>
+      </Providers>
     </ClerkProvider>
   );
 }
