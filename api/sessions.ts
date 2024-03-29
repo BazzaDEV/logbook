@@ -2,6 +2,7 @@
 
 import { WorkSession } from "@prisma/client";
 import prisma from "@/lib/db";
+import { revalidatePath } from "next/cache";
 
 export async function getSessions(userId: string) {
   const sessions = await prisma.workSession.findMany({
@@ -14,7 +15,7 @@ export async function getSessions(userId: string) {
 }
 
 export async function startSession(
-  data: Omit<WorkSession, "id" | "startTime">,
+  data: Omit<WorkSession, "id" | "startTime" | "endTime">,
 ) {
   const session = await prisma.workSession.create({
     data,
@@ -31,12 +32,14 @@ export async function startSession(
 }
 
 export async function updateSession(data: Pick<WorkSession, "id" | "notes">) {
-  await prisma.workSession.update({
+  const updatedSession = await prisma.workSession.update({
     where: {
       id: data.id,
     },
     data,
   });
+
+  return updatedSession;
 }
 
 export async function pauseSession(data: Pick<WorkSession, "id">) {
@@ -83,4 +86,6 @@ export async function endSession(data: Pick<WorkSession, "id">) {
       type: "END",
     },
   });
+
+  revalidatePath("/");
 }

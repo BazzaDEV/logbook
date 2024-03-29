@@ -14,17 +14,11 @@ datasource db {
   // directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model User {
-  id          String        @id
-  WorkSession WorkSession[]
-}
-
 model WorkSession {
   id        Int                @id @default(autoincrement())
   userId    String
   startTime DateTime           @default(now())
   endTime   DateTime?
-  user      User               @relation(fields: [userId], references: [id])
   notes     String?
   events    WorkSessionEvent[]
 }
