@@ -1,8 +1,16 @@
 import { getSessions } from "@/api/sessions";
 import Editor from "@/components/editor/editor";
+import Session from "@/components/session";
 import SessionForm from "@/components/session-form";
-import { getTimeFromDate, isSameDay } from "@/lib/utils";
+import { MakeRequired, getTimeFromDate, isSameDay } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
+import { WorkSession } from "@prisma/client";
+
+function hasNonNullEndTime(
+  session: WorkSession,
+): session is WorkSession & { endTime: Date } {
+  return session.endTime !== null;
+}
 
 export default async function Home() {
   const { userId } = auth();
@@ -17,7 +25,7 @@ export default async function Home() {
     isSameDay(new Date(), s.startTime),
   );
 
-  const todayPastSessions = todaySessions.filter((s) => s.endTime !== null);
+  const todayPastSessions = todaySessions.filter(hasNonNullEndTime);
 
   const activeSession = todaySessions.filter((s) => !s.endTime).at(0);
 
@@ -25,18 +33,13 @@ export default async function Home() {
     <div className="max-w-screen-lg m-auto">
       <div className="flex flex-col gap-10">
         <h1 className="text-6xl font-bold tracking-tighter">Today</h1>
-        {todayPastSessions
-          .sort((a, b) => a.startTime.getTime() - b.endTime!.getTime())
-          .map((session) => (
-            <div key={session.id}>
-              <div className="inline-flex gap-1">
-                <span>{getTimeFromDate(session.startTime)}</span>
-                <span>-</span>
-                <span>{getTimeFromDate(session.endTime!)}</span>
-              </div>
-              <Editor viewOnly initialContent={session.notes} />
-            </div>
-          ))}
+        <div className="flex flex-col gap-2">
+          {todayPastSessions
+            .sort((a, b) => a.startTime.getTime() - b.endTime.getTime())
+            .map((session, index) => (
+              <Session key={session.id} i={index + 1} session={session} />
+            ))}
+        </div>
         <SessionForm session={activeSession} />
       </div>
     </div>

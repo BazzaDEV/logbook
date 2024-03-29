@@ -40,6 +40,7 @@ const horizontalRule = HorizontalRule.configure({
 });
 
 const starterKit = StarterKit.configure({
+  heading: false,
   bulletList: {
     HTMLAttributes: {
       class: cx("list-disc list-outside leading-3 -mt-2"),
@@ -85,5 +86,5 @@ export const defaultExtensions = [
   tiptapLink,
   taskList,
   taskItem,
-  horizontalRule,
+  // horizontalRule,
 ];

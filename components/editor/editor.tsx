@@ -5,7 +5,6 @@ import "@/components/editor/prosemirror.css";
 import {
   EditorContent,
   EditorRoot,
-  JSONContent,
   EditorCommand,
   EditorCommandItem,
   EditorCommandEmpty,
@@ -16,6 +15,7 @@ import { suggestionItems, slashCommand } from "./slash-menu";
 import { handleCommandNavigation } from "novel/extensions";
 import { useAtom } from "jotai";
 import { editorAtom } from "@/lib/atoms";
+import { cn } from "@/lib/utils";
 
 const extensions = [...defaultExtensions, slashCommand];
 
@@ -38,7 +38,10 @@ const Editor = ({
     <div className="relative w-full max-w-screen-lg">
       <EditorRoot>
         <EditorContent
-          className="relative w-full max-w-screen-lg bg-background sm:mb-[calc(20vh)] sm:rounded-lg"
+          className={cn(
+            "relative w-full max-w-screen-lg bg-background sm:rounded-lg",
+            !viewOnly && "p-12 px-8 sm:px-12 border shadow-lg",
+          )}
           onUpdate={({ editor }) => {
             setEditor(editor);
             const json = editor.getJSON();
@@ -53,7 +56,7 @@ const Editor = ({
               keydown: (_view, event) => handleCommandNavigation(event),
             },
             attributes: {
-              class: `prose dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full`,
+              class: `prose prose-slate dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full`,
             },
           }}
         >

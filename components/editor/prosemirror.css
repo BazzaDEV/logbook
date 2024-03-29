@@ -1,6 +1,6 @@
 .ProseMirror {
   /* @apply p-12 px-8 sm:px-12; */
-  @apply sm:px-2;
+  /* @apply sm:px-2; */
 }
 
 .ProseMirror .is-editor-empty:first-child::before {
