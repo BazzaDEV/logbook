@@ -26,10 +26,7 @@ export default function Session({ session, i, ...props }: Props) {
   const endTime = getTimeFromDate(session.endTime);
 
   return (
-    <Card
-      {...props}
-      className="shadow-none border-none hover:shadow-md transition-shadow duration-300"
-    >
+    <Card {...props} className="hover:shadow-md transition-shadow duration-300">
       <CardHeader>
         <CardTitle className="inline-flex justify-between items-center">
           <span>Session {i}</span>

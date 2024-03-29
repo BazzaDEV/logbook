@@ -68,6 +68,9 @@ dependencies:
   tailwindcss-animate:
     specifier: ^1.0.7
     version: 1.0.7(tailwindcss@3.4.2)
+  tiptap-markdown:
+    specifier: ^0.8.10
+    version: 0.8.10(@tiptap/core@2.2.4)
   usehooks-ts:
     specifier: ^3.0.2
     version: 3.0.2(react@18.2.0)

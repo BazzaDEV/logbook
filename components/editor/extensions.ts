@@ -6,13 +6,32 @@ import {
   StarterKit,
   Placeholder,
 } from "novel/extensions";
+import { Markdown } from "tiptap-markdown";
 
 import { cx } from "class-variance-authority";
 
 // TODO I am using cx here to get tailwind autocomplete working, idk if someone else can write a regex to just capture the class key in objects
 
+const markdown = Markdown.configure({
+  tightLists: true, // No <p> inside <li> in markdown output
+  tightListClass: "tight", // Add class to <ul> allowing you to remove <p> margins when tight
+  bulletListMarker: "-", // <li> prefix in markdown output
+  linkify: false, // Create links from "https://..." text
+  breaks: false, // New lines (\n) in markdown input are converted to <br>
+  transformPastedText: true, // Allow to paste markdown text in the editor
+  transformCopiedText: false, // Copied text is transformed to markdown
+});
+
 // You can overwrite the placeholder with your own configuration
-const placeholder = Placeholder;
+const placeholder = Placeholder.configure({
+  placeholder: ({ pos }) => {
+    if (pos === 0) {
+      return "What are you working on?";
+    }
+
+    return "What else are you working on?";
+  },
+});
 const tiptapLink = TiptapLink.configure({
   HTMLAttributes: {
     class: cx(
@@ -56,19 +75,19 @@ const starterKit = StarterKit.configure({
       class: cx("leading-normal -mb-2"),
     },
   },
-  blockquote: {
-    HTMLAttributes: {
-      class: cx("border-l-4 border-primary"),
-    },
-  },
-  codeBlock: {
-    HTMLAttributes: {
-      class: cx("rounded-sm bg-muted border p-5 font-mono font-medium"),
-    },
-  },
+  // blockquote: {
+  //   HTMLAttributes: {
+  //     class: cx("border-l-4 border-primary"),
+  //   },
+  // },
+  // codeBlock: {
+  //   HTMLAttributes: {
+  //     class: cx("rounded-sm bg-muted border p-5 font-mono font-medium"),
+  //   },
+  // },
   code: {
     HTMLAttributes: {
-      class: cx("rounded-md bg-muted  px-1.5 py-1 font-mono font-medium"),
+      class: cx("rounded-md bg-muted px-1.5 py-1 font-mono font-medium"),
       spellcheck: "false",
     },
   },
@@ -86,5 +105,6 @@ export const defaultExtensions = [
   tiptapLink,
   taskList,
   taskItem,
+  markdown,
   // horizontalRule,
 ];
