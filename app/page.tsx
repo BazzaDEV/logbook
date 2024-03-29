@@ -1,4 +1,5 @@
 import { getSessions } from "@/api/sessions";
+import Editor from "@/components/editor/editor";
 import SessionForm from "@/components/session-form";
 import { getTimeFromDate, isSameDay } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
@@ -33,7 +34,7 @@ export default async function Home() {
                 <span>-</span>
                 <span>{getTimeFromDate(session.endTime!)}</span>
               </div>
-              <div>{JSON.stringify(session.notes)}</div>
+              <Editor viewOnly initialContent={session.notes} />
             </div>
           ))}
         <SessionForm session={activeSession} />

@@ -14,7 +14,8 @@ export function isSameDay(d1: Date, d2: Date) {
 }
 
 export function getTimeFromDate(d: Date) {
-  const h = d.getHours() % 12;
+  const hours = d.getHours();
+  const h = hours > 12 ? hours % 12 : hours;
   const m = d.getMinutes();
   const mm = m < 10 ? `0${m}` : m;
   const period = d.getHours() >= 12 ? "PM" : "AM";

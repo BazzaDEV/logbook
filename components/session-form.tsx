@@ -11,10 +11,12 @@ import { useDebounceCallback } from "usehooks-ts";
 import { getTimeFromDate } from "@/lib/utils";
 import dynamic from "next/dynamic";
 
-const Editor = dynamic(() => import("./editor"), { ssr: false });
+const Editor = dynamic(() => import("@/components/editor/editor"), {
+  ssr: false,
+});
 
 export default function SessionForm({ session }: { session?: WorkSession }) {
-  const [editor] = useAtom(editorAtom);
+  const [editor, setEditor] = useAtom(editorAtom);
   const [activeSession, setActiveSession] = useAtom(activeWorkSessionAtom);
   const { userId } = useAuth();
 
@@ -46,6 +48,7 @@ export default function SessionForm({ session }: { session?: WorkSession }) {
     console.log("Starting session...");
 
     const notesJson = JSON.stringify(editor?.getJSON());
+    console.log("notesJson:", notesJson);
     console.log("userId:", userId);
 
     try {
@@ -78,6 +81,7 @@ export default function SessionForm({ session }: { session?: WorkSession }) {
       });
 
       setActiveSession(undefined);
+      editor?.commands.clearContent();
 
       console.log(session);
     } catch (error) {
