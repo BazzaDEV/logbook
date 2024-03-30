@@ -3,13 +3,6 @@ import SessionForm from "@/components/session/session-form";
 import SessionsList from "@/components/session/sessions-list";
 import { getGreeting, isSameDay } from "@/lib/utils";
 import { currentUser, redirectToSignIn } from "@clerk/nextjs";
-import { WorkSession } from "@prisma/client";
-
-function hasNonNullEndTime(
-  session: WorkSession,
-): session is WorkSession & { endTime: Date } {
-  return session.endTime !== null;
-}
 
 export default async function Home() {
   const user = await currentUser();
@@ -32,7 +25,7 @@ export default async function Home() {
     <div className="max-w-screen-lg m-auto">
       <div className="flex flex-col gap-10">
         <div className="space-y-4">
-          <h1 className="bg-gradient-to-r from-fuchsia-600 to-pink-600 inline-block text-transparent bg-clip-text font-bold text-6xl tracking-tighter">
+          <h1 className="pb-1.5 bg-gradient-to-r from-fuchsia-600 to-pink-600 inline-block text-transparent bg-clip-text font-bold text-6xl tracking-tighter">
             {greeting}, {user.firstName}
           </h1>
           <h1 className="bg-gradient-to-r from-slate-300 to-slate-200 inline-block text-transparent bg-clip-text text-4xl font-bold tracking-tighter">
