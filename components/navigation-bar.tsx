@@ -21,7 +21,7 @@ export default function NavigationBar() {
           </span>
         </div>
       </div>
-      <UserButton />
+      <UserButton afterSignOutUrl="/" />
     </header>
   );
 }
