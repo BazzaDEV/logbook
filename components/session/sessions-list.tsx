@@ -9,6 +9,9 @@ interface Props {
   sessions: WorkSession[];
 }
 
+const NO_SESSION_NOTES_MESSAGE =
+  "You didn't take any notes during this session.";
+
 const SessionListItem = ({
   session,
   index,
@@ -48,9 +51,7 @@ const SessionListItem = ({
       ) : session.notes ? (
         <Editor initialContent={session.notes} viewOnly />
       ) : (
-        <p className="text-slate-400">
-          You didn't take any notes during this session.
-        </p>
+        <p className="text-slate-400">{NO_SESSION_NOTES_MESSAGE}</p>
       )}
     </li>
   );

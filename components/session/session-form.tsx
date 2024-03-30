@@ -15,13 +15,9 @@ const Editor = dynamic(() => import("@/components/editor/editor"), {
 });
 
 export default function SessionForm({ session }: { session?: WorkSession }) {
-  const [editor, setEditor] = useAtom(editorAtom);
+  const [editor] = useAtom(editorAtom);
   const [activeSession, setActiveSession] = useAtom(activeWorkSessionAtom);
   const { userId } = useAuth();
-
-  if (!userId) {
-    return null;
-  }
 
   const _updateSessionNotes = useCallback(
     async (notes: string) => {
@@ -66,7 +62,7 @@ export default function SessionForm({ session }: { session?: WorkSession }) {
 
   useEffect(() => {
     setActiveSession(session);
-  }, []);
+  }, [setActiveSession, session]);
 
   return (
     <div className="flex flex-col gap-4">
