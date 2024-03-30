@@ -2,7 +2,7 @@ import { getSessions } from "@/api/sessions";
 import SessionForm from "@/components/session/session-form";
 import SessionsList from "@/components/session/sessions-list";
 import { getGreeting, isSameDay } from "@/lib/utils";
-import { currentUser } from "@clerk/nextjs";
+import { currentUser, redirectToSignIn } from "@clerk/nextjs";
 import { WorkSession } from "@prisma/client";
 
 function hasNonNullEndTime(
@@ -15,7 +15,7 @@ export default async function Home() {
   const user = await currentUser();
 
   if (!user) {
-    return null;
+    return redirectToSignIn();
   }
 
   const workSessions = await getSessions(user.id);
