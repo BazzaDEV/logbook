@@ -25,3 +25,17 @@ export function getTimeFromDate(d: Date) {
 
   return `${h}:${mm} ${period}`;
 }
+
+type Greeting = "Good morning" | "Good afternoon" | "Good evening";
+
+export function getGreeting(): Greeting {
+  const hour = new Date().getHours(); // Get the current hour
+
+  if (hour < 12) {
+    return "Good morning";
+  } else if (hour < 18) {
+    return "Good afternoon";
+  } else {
+    return "Good evening";
+  }
+}

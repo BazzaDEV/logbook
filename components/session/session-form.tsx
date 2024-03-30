@@ -2,13 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { WorkSession } from "@prisma/client";
-import { endSession, startSession, updateSession } from "@/api/sessions";
+import { startSession, updateSession } from "@/api/sessions";
 import { useCallback, useEffect } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { useAtom } from "jotai";
 import { activeWorkSessionAtom, editorAtom } from "@/lib/atoms";
 import { useDebounceCallback } from "usehooks-ts";
-import { getTimeFromDate } from "@/lib/utils";
 import dynamic from "next/dynamic";
 
 const Editor = dynamic(() => import("@/components/editor/editor"), {
@@ -65,61 +64,19 @@ export default function SessionForm({ session }: { session?: WorkSession }) {
     }
   }
 
-  async function handleEndSession() {
-    if (!activeSession) {
-      console.log("No active session to end.");
-      return;
-    }
-
-    console.log("Ending session...");
-
-    try {
-      const notes = JSON.stringify(editor?.getJSON());
-      await _updateSessionNotes(notes);
-      await endSession({
-        id: activeSession!.id,
-      });
-
-      setActiveSession(undefined);
-      editor?.commands.clearContent();
-
-      console.log(session);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   useEffect(() => {
     setActiveSession(session);
   }, []);
 
   return (
     <div className="flex flex-col gap-4">
-      {activeSession && (
-        <div className="inline-flex gap-1">
-          <span>{getTimeFromDate(activeSession?.startTime)}</span>
-          <span>-</span>
-          <span>
-            {activeSession?.endTime
-              ? getTimeFromDate(activeSession.endTime)
-              : "Now"}
-          </span>
-        </div>
-      )}
-      <Editor updateSessionNotes={updateSessionNotes} />
       {!activeSession && (
-        <Button className="py-10 w-full" onClick={handleStartSession}>
-          Start Session
-        </Button>
-      )}
-      {activeSession && (
-        <Button
-          className="py-10 w-full"
-          variant="destructive"
-          onClick={handleEndSession}
-        >
-          End Session
-        </Button>
+        <>
+          <Editor updateSessionNotes={updateSessionNotes} />
+          <Button className="py-10 w-full" onClick={handleStartSession}>
+            Start Session
+          </Button>
+        </>
       )}
     </div>
   );

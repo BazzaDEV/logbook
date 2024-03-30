@@ -28,6 +28,8 @@ export async function startSession(
     },
   });
 
+  revalidatePath("/");
+
   return session;
 }
 

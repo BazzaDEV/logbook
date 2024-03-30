@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import NavigationBar from "@/components/navigation-bar";
 import { cn } from "@/lib/utils";
 import Providers from "@/components/providers";
-
-const inter = Inter({ subsets: ["latin"] });
+import { inter } from "./fonts";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,11 +20,17 @@ export default function RootLayout({
     <ClerkProvider>
       <Providers>
         <html lang="en">
-          <body
-            className={cn(inter.className, "min-h-screen flex flex-col p-4")}
-          >
-            <NavigationBar />
-            <div className="flex-1">{children}</div>
+          <body>
+            <div
+              vaul-drawer-wrapper=""
+              className={cn(
+                inter.className,
+                "min-h-screen flex flex-col gap-10 p-4 bg-background",
+              )}
+            >
+              <NavigationBar />
+              <div className="flex-1">{children}</div>
+            </div>
           </body>
         </html>
       </Providers>

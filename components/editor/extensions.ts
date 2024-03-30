@@ -12,15 +12,15 @@ import { cx } from "class-variance-authority";
 
 // TODO I am using cx here to get tailwind autocomplete working, idk if someone else can write a regex to just capture the class key in objects
 
-const markdown = Markdown.configure({
-  tightLists: true, // No <p> inside <li> in markdown output
-  tightListClass: "tight", // Add class to <ul> allowing you to remove <p> margins when tight
-  bulletListMarker: "-", // <li> prefix in markdown output
-  linkify: false, // Create links from "https://..." text
-  breaks: false, // New lines (\n) in markdown input are converted to <br>
-  transformPastedText: true, // Allow to paste markdown text in the editor
-  transformCopiedText: false, // Copied text is transformed to markdown
-});
+// const markdown = Markdown.configure({
+//   tightLists: true, // No <p> inside <li> in markdown output
+//   tightListClass: "tight", // Add class to <ul> allowing you to remove <p> margins when tight
+//   bulletListMarker: "-", // <li> prefix in markdown output
+//   linkify: false, // Create links from "https://..." text
+//   breaks: false, // New lines (\n) in markdown input are converted to <br>
+//   transformPastedText: true, // Allow to paste markdown text in the editor
+//   transformCopiedText: false, // Copied text is transformed to markdown
+// });
 
 // You can overwrite the placeholder with your own configuration
 const placeholder = Placeholder.configure({
@@ -105,6 +105,6 @@ export const defaultExtensions = [
   tiptapLink,
   taskList,
   taskItem,
-  markdown,
+  // markdown,
   // horizontalRule,
 ];
