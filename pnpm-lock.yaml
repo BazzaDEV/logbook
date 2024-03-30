@@ -3776,7 +3776,7 @@ packages:
       react-moveable: 0.56.0
       tippy.js: 6.3.7
       tiptap-extension-auto-joiner: 0.1.1
-      tiptap-extension-global-drag-handle: 0.1.2
+      tiptap-extension-global-drag-handle: 0.1.6
       tiptap-markdown: 0.8.10(@tiptap/core@2.2.4)
       tunnel-rat: 0.1.2(@types/react@18.2.73)(react@18.2.0)
     transitivePeerDependencies:
@@ -4860,8 +4860,8 @@ packages:
     resolution: {integrity: sha512-n38N7qWUL3Iz6XdwxZLacSuE1itIAp6lzcVUYgi0K/d/eLydgFl07ZixBJ6XHCDESjw4wrRgRQQE9nvMGvn3QA==}
     dev: false
 
-  /tiptap-extension-global-drag-handle@0.1.2:
-    resolution: {integrity: sha512-QrLIyVEbCKFFyz8RSaa4TjBbYKrmZ+Fl69GkgH2nrj8EE7pOkQkYXqaS7ommfnGMiZspcuwdp9n73oJ29wDKpA==}
+  /tiptap-extension-global-drag-handle@0.1.6:
+    resolution: {integrity: sha512-kjRFd/glJGTHEglHPNWtML1iINuEBG4eWvWbNIuuXE2LbylFXYHKVgLvZgxilqXSBH/o+lKDEp7/iL3lKvnxGw==}
     dev: false
 
   /tiptap-markdown@0.8.10(@tiptap/core@2.2.4):
