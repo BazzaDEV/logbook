@@ -4,6 +4,7 @@ import Editor from "../editor/editor";
 import ActiveSession from "./active-session";
 import { Badge } from "../ui/badge";
 import { ArrowRight } from "lucide-react";
+import { LocalTime } from "./date-time";
 
 interface Props {
   sessions: WorkSession[];
@@ -21,10 +22,6 @@ const SessionListItem = ({
 }) => {
   const active = session.endTime === null;
 
-  const startTime = getTimeFromDate(session.startTime);
-  const endTime =
-    session.endTime === null ? "Now" : getTimeFromDate(session.endTime);
-
   return (
     <li className="ms-4 space-y-2">
       <div
@@ -34,9 +31,17 @@ const SessionListItem = ({
         )}
       />
       <div className="mb-1 text-sm leading-none text-slate-400 flex gap-1 items-center">
-        <span>{startTime}</span>
+        <span>
+          <LocalTime date={session.startTime} />
+        </span>
         <ArrowRight className="size-4 text-slate-500" />
-        <span className={cn(active && "text-green-500")}>{endTime}</span>
+        <span className={cn(active && "text-green-500")}>
+          {session.endTime === null ? (
+            "Now"
+          ) : (
+            <LocalTime date={session.endTime} />
+          )}
+        </span>
       </div>
       <h3 className="text-lg font-semibold inline-flex items-center gap-2">
         <span>Session {index + 1}</span>
