@@ -13,9 +13,9 @@ export default async function Home() {
 
   const workSessions = await getSessions(user.id);
 
-  const todaySessions = workSessions.filter((s) =>
-    isSameDay(new Date(), s.startTime),
-  );
+  const todaySessions = workSessions
+    .filter((s) => isSameDay(new Date(), s.startTime))
+    .sort((a, b) => a.startTime.getTime() - b.startTime.getTime());
 
   const activeSession = todaySessions.filter((s) => !s.endTime).at(0);
 
