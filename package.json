@@ -8,11 +8,20 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "prisma": {
+    "schema": "src/prisma/schema.prisma"
+  },
   "dependencies": {
+    "@lucia-auth/adapter-prisma": "^4.0.1",
+    "@node-rs/argon2": "^1.8.0",
+    "@node-rs/bcrypt": "^1.10.1",
+    "arctic": "^1.5.0",
+    "lucia": "^3.1.1",
     "next": "14.1.4",
     "oslo": "^1.2.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",
