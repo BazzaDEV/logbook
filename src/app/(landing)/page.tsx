@@ -3,6 +3,8 @@ import { NotebookPen } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { jetbrainsMono } from '@/lib/fonts'
 import Link from 'next/link'
+import { validateRequest } from '@/lib/auth'
+import { redirect } from 'next/navigation'
 
 const Logbook = () => (
   <span
@@ -34,6 +36,12 @@ const CTA = () => (
 )
 
 export default async function Page() {
+  const { user } = await validateRequest()
+
+  if (user) {
+    return redirect('/dashboard')
+  }
+
   return (
     <div className="flex flex-col items-center justify-center gap-16 h-full w-full">
       <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-center">
