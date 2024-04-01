@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import '@/app/globals.css'
 import { inter } from '@/lib/fonts'
 import { cn } from '@/lib/utils'
+import NavigationBar from '@/components/navigation-bar'
 
 export const metadata: Metadata = {
   title: 'Logbook',
@@ -13,5 +14,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  return <div>{children}</div>
+  return (
+    <div className="flex flex-col h-full w-full p-4">
+      <NavigationBar />
+      <div className="flex-1">{children}</div>
+      <footer>Footer</footer>
+    </div>
+  )
 }

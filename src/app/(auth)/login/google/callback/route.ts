@@ -4,6 +4,7 @@ import { OAuth2RequestError } from 'arctic'
 import { generateId } from 'lucia'
 import db from '@/lib/db'
 import { google } from '@/lib/auth/oauth'
+import { Prisma } from '@prisma/client'
 
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url)
@@ -66,7 +67,6 @@ export async function GET(request: Request): Promise<Response> {
     if (!googleUser.given_name || !googleUser.family_name) {
       return new Response(null, {
         status: 400,
-        statusText: 'Google user is missing first or last name',
       })
     }
 
@@ -80,6 +80,7 @@ export async function GET(request: Request): Promise<Response> {
         email: googleUser.email,
         firstName: googleUser.given_name,
         lastName: googleUser.family_name,
+        picture: googleUser.picture ?? null,
       },
     })
 
@@ -103,6 +104,18 @@ export async function GET(request: Request): Promise<Response> {
       return new Response(null, {
         status: 400,
       })
+    } else if (
+      e instanceof Prisma.PrismaClientValidationError ||
+      e instanceof Prisma.PrismaClientKnownRequestError
+    ) {
+      return Response.json(
+        {
+          error: e.message,
+        },
+        {
+          status: 400,
+        },
+      )
     }
     return new Response(null, {
       status: 500,
