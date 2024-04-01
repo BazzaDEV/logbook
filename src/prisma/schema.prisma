@@ -14,10 +14,12 @@ datasource db {
 }
 
 model User {
-  id       String    @id
-  googleId String    @unique
-  email    String    @unique
-  sessions Session[]
+  id        String    @id
+  googleId  String    @unique
+  email     String    @unique
+  firstName String
+  lastName  String
+  sessions  Session[]
 }
 
 model Session {

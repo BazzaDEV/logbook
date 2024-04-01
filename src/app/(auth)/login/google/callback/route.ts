@@ -41,8 +41,6 @@ export async function GET(request: Request): Promise<Response> {
 
     const googleUser: GoogleUser = await googleUserResponse.json()
 
-    console.log(googleUser)
-
     const existingUser = await db.user.findUnique({
       where: {
         googleId: googleUser.id,
@@ -65,6 +63,13 @@ export async function GET(request: Request): Promise<Response> {
       })
     }
 
+    if (!googleUser.given_name || !googleUser.family_name) {
+      return new Response(null, {
+        status: 400,
+        statusText: 'Google user is missing first or last name',
+      })
+    }
+
     const userId = generateId(15)
 
     // Replace this with your own DB client.
@@ -73,6 +78,8 @@ export async function GET(request: Request): Promise<Response> {
         id: userId,
         googleId: googleUser.id,
         email: googleUser.email,
+        firstName: googleUser.given_name,
+        lastName: googleUser.family_name,
       },
     })
 
@@ -107,8 +114,9 @@ interface GoogleUser {
   id: string
   email: string
   verified_email: boolean
-  name: string
   given_name: string
+  family_name: string
+  name: string
   picture: string
   locale: string
 }
