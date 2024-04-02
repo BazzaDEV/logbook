@@ -15,6 +15,8 @@ import { cn } from '@/lib/utils'
 import { KeySquare, NotebookPen } from 'lucide-react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import Image from 'next/image'
+import googleLogo from '@/../public/google.svg'
 
 export default async function Page() {
   const { user } = await validateRequest()
@@ -67,9 +69,24 @@ export default async function Page() {
                 </Button>
               </div>
               <Separator />
-              <Link href="/login/google">
-                <Button className="w-full shadow-md">Login with Google</Button>
-              </Link>
+              <div className="flex flex-col items-center gap-4">
+                <span className="text-sm text-muted-foreground">
+                  Or sign in with a provider below:
+                </span>
+                <Button
+                  asChild
+                  variant="secondary"
+                  size="lg"
+                  className="w-full"
+                >
+                  <Link href="/login/google">
+                    <Image
+                      src={googleLogo}
+                      alt="Google"
+                    />
+                  </Link>
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </div>
