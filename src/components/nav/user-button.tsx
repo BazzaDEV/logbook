@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,7 +31,7 @@ export default async function UserButton() {
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent className='rounded-xl' align="end">
         <DropdownMenuLabel className="flex gap-4 items-center px-4">
           <Avatar className="size-6 shadow-md">
             {user?.picture && <AvatarImage src={user.picture} />}
@@ -52,7 +54,7 @@ export default async function UserButton() {
         <form action={logoutAction}>
           <DropdownMenuItem
             asChild
-            className="inline-flex w-full gap-1.5"
+            className="inline-flex w-full gap-1.5 rounded-lg py-2 text-destructive focus:text-destructive focus:bg-destructive/5"
           >
             <button>
               <LogOut className="size-4" />
