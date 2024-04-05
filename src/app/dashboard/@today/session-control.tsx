@@ -1,7 +1,7 @@
 'use client'
 
 import Editor, { defaultExtensions } from '@/components/editor/editor'
-import { Editor as TiptapEditor } from '@tiptap/react'
+import { JSONContent, Editor as TiptapEditor } from '@tiptap/react'
 import { WorkSession, WorkSessionEvent } from '@prisma/client'
 
 function calcStopwatch(elapsedSeconds: number) {
@@ -20,23 +20,38 @@ interface Props {
 }
 
 export default function SessionControl({ session }: Props) {
-  const { elapsedTime, editor, initialize, setEditor } = useActiveSessionStore(
-    (state) => state,
+  const { elapsedTime, sessionId, editor, initialize, setEditor } =
+    useActiveSessionStore((state) => state)
+
+  const _updateNotes = useCallback(
+    async (json: JSONContent) => {
+      console.log('Updating notes in DB')
+      const notes = JSON.stringify(json)
+      await updateSessionNotes({ id: sessionId as string, notes })
+    },
+    [sessionId],
   )
+
+  const updateNotes = useDebounceCallback(_updateNotes, 3000)
 
   useEffect(() => {
     if (session) {
       initialize(session)
     }
+
     setEditor(
       new TiptapEditor({
         extensions: [...defaultExtensions],
+        ...(session?.notes && { content: JSON.parse(session.notes) }),
         onUpdate: ({ editor }) => {
           console.log(editor.getJSON())
+          if (sessionId) {
+            updateNotes(editor.getJSON())
+          }
         },
       }),
     )
-  }, [session, setEditor, initialize])
+  }, [session, sessionId, updateNotes, setEditor, initialize])
 
   return (
     <div className="flex flex-col">
@@ -52,14 +67,16 @@ export default function SessionControl({ session }: Props) {
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { useActiveSessionStore } from '@/lib/stores/active-session-store'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import {
   createSession,
   endSession,
   pauseSession,
   resumeSession,
+  updateSessionNotes,
 } from '@/lib/api/sessions'
 import Stopwatch from '@/components/session/stopwatch'
+import { useDebounceCallback } from '@/lib/hooks/use-debounce'
 
 //********* Controls ***********//
 

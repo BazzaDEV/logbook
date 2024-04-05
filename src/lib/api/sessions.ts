@@ -34,6 +34,27 @@ export async function createSession(
   return newSession
 }
 
+export async function updateSessionNotes(
+  data: Pick<WorkSession, 'id' | 'notes'>,
+) {
+  const user = await getUser()
+
+  if (!user) {
+    throw new Error('Not authenticated')
+  }
+
+  const updatedSession = await db.workSession.update({
+    where: {
+      id: data.id,
+    },
+    data: {
+      ...data,
+    },
+  })
+
+  return updatedSession
+}
+
 export async function pauseSession(
   data: Pick<WorkSessionEvent, 'time' | 'sessionId'>,
 ) {
