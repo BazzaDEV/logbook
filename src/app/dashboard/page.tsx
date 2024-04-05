@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { validateRequest } from '@/lib/auth'
+import DashboardTabs from '@/components/nav/dashboard-tabs'
 
 export default async function Page() {
   const { user } = await validateRequest()
@@ -13,12 +14,13 @@ export default async function Page() {
   return (
     <div className="w-full">
       <div className="space-y-4 flex flex-col">
-        <h1 className="pb-1.5 bg-gradient-to-r from-fuchsia-600 to-pink-600 inline-block text-transparent bg-clip-text font-bold text-5xl tracking-tighter">
-          {greeting}, {user.firstName}
-        </h1>
-        <h1 className="bg-gradient-to-r from-slate-300 to-slate-200 inline-block text-transparent bg-clip-text text-2xl font-bold tracking-tighter">
-          Ready to make today productive?
-        </h1>
+        {/* <h1 className="pb-1.5 bg-gradient-to-r from-fuchsia-600 to-pink-600 inline-block text-transparent bg-clip-text font-bold text-5xl tracking-tighter"> */}
+        {/*   {greeting}, {user.firstName} */}
+        {/* </h1> */}
+        {/* <h1 className="bg-gradient-to-r from-zinc-400 to-zinc-300 inline-block text-transparent bg-clip-text text-2xl font-bold tracking-tighter"> */}
+        {/*   Ready to make today productive? */}
+        {/* </h1> */}
+        <DashboardTabs />
       </div>
     </div>
   )

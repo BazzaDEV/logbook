@@ -59,12 +59,24 @@ export default function SessionControl({ session }: Props) {
   }, [session?.notes, sessionId, updateNotes, setEditor, initialize])
 
   return (
-    <div className="flex flex-col">
-      <div className="bg-zinc-100 p-8 flex flex-col items-center rounded-t-3xl shadow-inner">
-        <Stopwatch values={calcStopwatch(elapsedTime)} />
+    <div className="flex flex-col space-y-4">
+      <div>
+        <div className="bg-zinc-100 p-8 flex flex-col items-center rounded-t-3xl shadow-inner">
+          <Stopwatch values={calcStopwatch(elapsedTime)} />
+        </div>
+        <Controls />
       </div>
-      <Controls />
-      <Editor editor={editor} />
+      <Card className="rounded-3xl">
+        <CardHeader>
+          <CardTitle>Session Notes</CardTitle>
+          <CardDescription>
+            Write about what you are working on this session.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="min-h-[300px]">
+          <Editor editor={editor} />
+        </CardContent>
+      </Card>
     </div>
   )
 }
@@ -82,6 +94,13 @@ import {
 } from '@/lib/api/sessions'
 import Stopwatch from '@/components/session/stopwatch'
 import { useDebounceCallback } from '@/lib/hooks/use-debounce'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 
 //********* Controls ***********//
 

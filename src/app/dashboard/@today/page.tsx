@@ -36,8 +36,7 @@ export default async function Slot() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <h2 className="text-4xl font-bold tracking-tighter">Today</h2>
+    <div className="flex flex-col gap-8">
       <SessionStatistics data={statistics} />
       <SessionControl session={activeSession} />
       <SessionsList sessions={sessions} />
