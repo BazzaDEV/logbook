@@ -20,8 +20,8 @@ interface Props {
 }
 
 export default function SessionControl({ session }: Props) {
-  const { elapsedTime, sessionId, editor, initialize, setEditor } =
-    useActiveSessionStore((state) => state)
+  const store = useActiveSessionStore((state) => state)
+  const { elapsedTime, sessionId, editor, initialize, setEditor } = store
 
   const _updateNotes = useCallback(
     async (json: JSONContent) => {
@@ -35,23 +35,28 @@ export default function SessionControl({ session }: Props) {
   const updateNotes = useDebounceCallback(_updateNotes, 3000)
 
   useEffect(() => {
-    if (session) {
+    if (session && sessionId === null) {
+      console.log('initializing session from props')
       initialize(session)
     }
+  }, [])
 
+  useEffect(() => {
+    console.log(store)
+    console.log('useeffect main')
+    console.log('setting editor')
     setEditor(
       new TiptapEditor({
         extensions: [...defaultExtensions],
         ...(session?.notes && { content: JSON.parse(session.notes) }),
         onUpdate: ({ editor }) => {
-          console.log(editor.getJSON())
           if (sessionId) {
             updateNotes(editor.getJSON())
           }
         },
       }),
     )
-  }, [session, sessionId, updateNotes, setEditor, initialize])
+  }, [session?.notes, sessionId, updateNotes, setEditor, initialize])
 
   return (
     <div className="flex flex-col">

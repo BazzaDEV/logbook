@@ -81,7 +81,15 @@ export const useActiveSessionStore = create<ActiveSessionStore>((set) => ({
   end: () =>
     set((state) => {
       if (state.timerId) clearInterval(state.timerId)
-      return { ...state, status: 'ENDED', elapsedTime: 0, timerId: null }
+      return {
+        ...state,
+        sessionId: null,
+        status: 'NOT_CREATED',
+        elapsedTime: 0,
+        timerId: null,
+        sessionNotes: null,
+        editor: null,
+      }
     }),
   pause: () =>
     set((state) => {

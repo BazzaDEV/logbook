@@ -7,8 +7,23 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function dist(a: Date, b: Date) {
-  return (a.getTime() - b.getTime()) / 1000
+type DistOptions = {
+  unit: 's' | 'ms'
+}
+
+const DEFAULT_DIST_OPTIONS: DistOptions = {
+  unit: 's',
+}
+
+export function dist(a: Date, b: Date, options?: DistOptions) {
+  options = {
+    ...DEFAULT_DIST_OPTIONS,
+    ...options,
+  }
+
+  const val = a.getTime() - b.getTime()
+
+  return options.unit === 's' ? val / 1000 : val
 }
 
 export function distFromNow(date: Date) {
