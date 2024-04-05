@@ -1,10 +1,12 @@
-import { validateRequest } from "@/lib/auth"
-import { getTodaySessions } from "./actions"
-import { Card } from "@/components/ui/card"
-import { BookOpenCheck, LucideHistory, Pause, Plus } from "lucide-react"
-import NewSessionButton from "./new-session-button"
-import SessionsList from "./sessions-list"
-import SessionControl from "./session-control"
+export const dynamic = 'force-dynamic'
+
+import { validateRequest } from '@/lib/auth'
+import { getTodaySessions } from './actions'
+import { Card } from '@/components/ui/card'
+import { BookOpenCheck, LucideHistory, Pause, Plus } from 'lucide-react'
+import SessionsList from './sessions-list'
+import SessionControl from './session-control'
+import head from 'lodash.head'
 
 export default async function Slot() {
   const { user } = await validateRequest()
@@ -15,12 +17,16 @@ export default async function Slot() {
 
   const sessions = await getTodaySessions({ id: user.id })
 
-  return <div className="flex flex-col gap-4">
-    <h2 className="text-4xl font-bold tracking-tighter">Today</h2>
-    <Stats />
-    <SessionControl />
-    <SessionsList sessions={sessions} />
-  </div>
+  const activeSession = head(sessions.filter((s) => s.endTime === null))
+
+  return (
+    <div className="flex flex-col gap-4">
+      <h2 className="text-4xl font-bold tracking-tighter">Today</h2>
+      <Stats />
+      <SessionControl session={activeSession} />
+      <SessionsList sessions={sessions} />
+    </div>
+  )
 }
 
 const Stats = () => (
@@ -54,7 +60,10 @@ const Stats = () => (
     </Card>
     <Card className="rounded-3xl h-44 p-5 flex flex-col justify-between bg-primary shadow-lg select-none cursor-pointer">
       <Plus className="size-16 text-background" />
-      <span className="text-zinc-200">Start a new <br />work session</span>
+      <span className="text-zinc-200">
+        Start a new <br />
+        work session
+      </span>
     </Card>
   </div>
 )

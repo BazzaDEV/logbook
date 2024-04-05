@@ -1,26 +1,23 @@
-'use client'
-
-import { useEditor, EditorContent } from '@tiptap/react'
+import { EditorContent, Editor as TiptapEditor } from '@tiptap/react'
+import Placeholder from '@tiptap/extension-placeholder'
 import StarterKit from '@tiptap/starter-kit'
 import { Color } from '@tiptap/extension-color'
 import ListItem from '@tiptap/extension-list-item'
 import TextStyle from '@tiptap/extension-text-style'
 import './styles.scss'
 
-export default function Editor() {
-  const editor = useEditor({
-    extensions,
-    content,
-    onUpdate: ({ editor }) => {
-      const json = editor.getJSON()
-      console.log(JSON.stringify(json, null, 2))
-    },
-  })
+interface Props {
+  editor: TiptapEditor | null
+}
 
+export default function Editor({ editor }: Props) {
   return <EditorContent editor={editor} />
 }
 
-const extensions = [
+export const defaultExtensions = [
+  Placeholder.configure({
+    placeholder: 'Write something...',
+  }),
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
   StarterKit.configure({
     heading: false,
@@ -40,7 +37,7 @@ const extensions = [
   }),
 ]
 
-const content = `
+export const testContent = `
 <h2>
   Hi there,
 </h2>

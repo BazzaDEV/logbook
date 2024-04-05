@@ -5,8 +5,9 @@ interface Props {
 }
 
 export default function SessionsList({ sessions }: Props) {
-  return <div>
-    {JSON.stringify(sessions, null, 2)}
-  </div>
-
+  return (
+    <div>
+      <pre>{JSON.stringify(sessions, null, 2)}</pre>
+    </div>
+  )
 }
