@@ -1,6 +1,7 @@
 import { Editor } from '@tiptap/react'
 import { create } from 'zustand'
 import { WorkSession, WorkSessionEvent } from '@prisma/client'
+import { totalTimePaused } from '../utils'
 
 export type ActiveSessionState = {
   sessionId: string | null
@@ -48,10 +49,9 @@ export const useActiveSessionStore = create<ActiveSessionStore>((set) => ({
           ? 'ACTIVE'
           : 'PAUSED'
 
-      console.log()
-
-      const elapsedTime =
+      const totalSessionTime =
         (new Date().getTime() - session.startTime.getTime()) / 1000
+      const elapsedTime = totalSessionTime - totalTimePaused(session)
 
       const timerId =
         status === 'ACTIVE'
