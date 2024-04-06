@@ -31,13 +31,15 @@ export default async function Page() {
   return (
     <div className="flex flex-col gap-8">
       <StatisticsPanel data={statistics} />
-      <div>
-        <h1 className="text-3xl -ml-0.5 font-semibold tracking-tighter">
-          Today&apos;s Sessions
-        </h1>
-        <p className="mt-2 text-muted-foreground">
-          Here&apos;s what you&apos;ve been up to today.
-        </p>
+      <div className="flex flex-col gap-4">
+        <div className="space-y-2">
+          <h1 className="text-3xl -ml-0.5 font-semibold tracking-tighter">
+            Today&apos;s Sessions
+          </h1>
+          <p className="text-muted-foreground">
+            Here&apos;s what you&apos;ve been up to today.
+          </p>
+        </div>
         <SessionsList sessions={completedSessions} />
       </div>
     </div>

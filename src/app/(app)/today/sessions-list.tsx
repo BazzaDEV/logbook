@@ -8,6 +8,7 @@ import { HTMLAttributes } from 'react'
 import { toZonedTime } from 'date-fns-tz'
 import { isToday } from 'date-fns'
 import { useConfigStore } from '@/lib/stores/config-store'
+import { Badge } from '@/components/ui/badge'
 
 const SessionListItem = ({
   session,
@@ -22,18 +23,21 @@ const SessionListItem = ({
   return (
     <div
       className={cn(
-        'inline-flex gap-4',
+        'inline-flex gap-4 items-center',
         'border border-accent rounded-xl py-2 px-4',
       )}
       {...props}
     >
-      <div className="min-w-[160px] inline-flex items-center gap-1 text-sm">
+      <div className="w-[160px] inline-flex items-center gap-1 text-sm">
         <LocalTime date={startTime} />
         <ArrowRight className="size-4" />
         <LocalTime date={endTime as Date} />
       </div>
-      <div>
-        <span className="font-semibold">Session {index}</span>
+      <div className="w-[100px] h-fit">
+        <span className="font-medium">Session {index}</span>
+      </div>
+      <div className="h-fit">
+        <Badge variant="secondary">Coming soon</Badge>
       </div>
     </div>
   )
