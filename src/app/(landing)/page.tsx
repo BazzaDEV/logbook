@@ -39,7 +39,7 @@ export default async function Page() {
   const { user } = await validateRequest()
 
   if (user) {
-    return redirect('/dashboard')
+    return redirect('/today')
   }
 
   return (
