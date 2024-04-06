@@ -40,6 +40,7 @@ export default function SessionController({ session }: Props) {
       console.log('FROM DB:', session)
       initialize(session)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -58,6 +59,7 @@ export default function SessionController({ session }: Props) {
         },
       }),
     )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.notes, sessionId, updateNotes, setEditor, initialize])
 
   return (
