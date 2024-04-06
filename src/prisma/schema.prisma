@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id
+  googleId  String    @unique
+  email     String    @unique
+  firstName String
+  lastName  String
+  picture   String?
+  sessions  Session[]
+}
+
+model Session {
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model WorkSession {
+  id        String             @id
+  userId    String
+  startTime DateTime           @default(now())
+  endTime   DateTime?
+  notes     String?
+  events    WorkSessionEvent[]
+}
+
+model WorkSessionEvent {
+  id        String               @id
+  sessionId String
+  session   WorkSession          @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  type      WorkSessionEventType
+  time      DateTime             @default(now())
+}
+
+enum WorkSessionEventType {
+  START
+  PAUSE
+  RESUME
+  END
+}
