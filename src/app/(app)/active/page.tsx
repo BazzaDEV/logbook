@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import { getUserOrRedirect } from '@/lib/auth'
-import SessionController from '../today/session-controller'
+import SessionController from './session-controller'
 import { getActiveSession } from './actions'
 
 export default async function Page() {
