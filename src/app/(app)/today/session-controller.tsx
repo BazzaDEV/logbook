@@ -16,10 +16,10 @@ function calcStopwatch(elapsedSeconds: number) {
 }
 
 interface Props {
-  session?: WorkSession & { events: WorkSessionEvent[] }
+  session: (WorkSession & { events: WorkSessionEvent[] }) | null
 }
 
-export default function SessionControl({ session }: Props) {
+export default function SessionController({ session }: Props) {
   const store = useActiveSessionStore((state) => state)
   const { elapsedTime, sessionId, editor, initialize, setEditor } = store
 
@@ -37,6 +37,7 @@ export default function SessionControl({ session }: Props) {
   useEffect(() => {
     if (session && sessionId === null) {
       console.log('initializing session from props')
+      console.log('FROM DB:', session)
       initialize(session)
     }
   }, [])
@@ -49,6 +50,7 @@ export default function SessionControl({ session }: Props) {
       new TiptapEditor({
         extensions: [...defaultExtensions],
         ...(session?.notes && { content: JSON.parse(session.notes) }),
+        content: editor?.getJSON(),
         onUpdate: ({ editor }) => {
           if (sessionId) {
             updateNotes(editor.getJSON())
@@ -60,12 +62,10 @@ export default function SessionControl({ session }: Props) {
 
   return (
     <div className="flex flex-col space-y-4">
-      <div>
-        <div className="bg-zinc-100 p-8 flex flex-col items-center rounded-t-3xl shadow-inner">
-          <Stopwatch values={calcStopwatch(elapsedTime)} />
-        </div>
-        <Controls />
+      <div className="bg-zinc-100 p-8 flex flex-col items-center rounded-3xl shadow-inner">
+        <Stopwatch values={calcStopwatch(elapsedTime)} />
       </div>
+      <Controls />
       <Card className="rounded-3xl">
         <CardHeader>
           <CardTitle>Session Notes</CardTitle>
@@ -196,7 +196,7 @@ const Controls = () => {
 
   return (
     <div
-      className={cn('grid *:rounded-none rounded-b-xl overflow-hidden', {
+      className={cn('grid *:rounded-none rounded-xl overflow-hidden', {
         'grid-cols-2': status === 'PAUSED',
         'grid-cols-1': status !== 'PAUSED',
       })}

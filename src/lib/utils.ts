@@ -1,7 +1,6 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { WorkSession, WorkSessionEvent } from '@prisma/client'
-import { argv0 } from 'process'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

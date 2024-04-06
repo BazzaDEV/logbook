@@ -1,24 +1,17 @@
-export const dynamic = 'force-dynamic'
-
-import { validateRequest } from '@/lib/auth'
+import { getUserOrRedirect } from '@/lib/auth'
 import { getTodaySessions } from './actions'
-import SessionsList from './sessions-list'
-import SessionControl from './session-control'
-import head from 'lodash.head'
-import SessionStatistics from './session-statistics'
 import { dist, totalTimePaused } from '@/lib/utils'
+import StatisticsPanel from './statistics-panel'
+import SessionsList from './sessions-list'
+import { headers } from 'next/headers'
 
-export default async function Slot() {
-  const { user } = await validateRequest()
+export default async function Page() {
+  const user = await getUserOrRedirect()
 
-  if (!user) {
-    return <div>Error: Unauthenticated</div>
-  }
+  console.log(headers())
 
   const sessions = await getTodaySessions({ id: user.id })
   const completedSessions = sessions.filter((s) => s.endTime !== null)
-
-  const activeSession = head(sessions.filter((s) => s.endTime === null))
 
   const statistics = {
     today: {
@@ -37,9 +30,16 @@ export default async function Slot() {
 
   return (
     <div className="flex flex-col gap-8">
-      <SessionStatistics data={statistics} />
-      <SessionControl session={activeSession} />
-      <SessionsList sessions={sessions} />
+      <StatisticsPanel data={statistics} />
+      <div>
+        <h1 className="text-3xl -ml-0.5 font-semibold tracking-tighter">
+          Today&apos;s Sessions
+        </h1>
+        <p className="mt-2 text-muted-foreground">
+          Here&apos;s what you&apos;ve been up to today.
+        </p>
+        <SessionsList sessions={completedSessions} />
+      </div>
     </div>
   )
 }

@@ -8,6 +8,16 @@ import { cache } from 'react'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
+export const getUserOrRedirect = async () => {
+  const user = await getUser()
+
+  if (!user) {
+    return redirect('/login')
+  }
+
+  return user
+}
+
 export const getUser = cache(async () => {
   const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null
   if (!sessionId) return null

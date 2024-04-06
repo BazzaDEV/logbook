@@ -2,6 +2,7 @@ import { Card } from '@/components/ui/card'
 import { BookOpenCheck, LucideHistory, Pause, Plus } from 'lucide-react'
 import { default as prettyMs } from 'pretty-ms'
 import mapValues from 'lodash.mapvalues'
+import Link from 'next/link'
 
 interface Props {
   data: {
@@ -35,7 +36,7 @@ function parse(prettyMsString: string) {
   }
 }
 
-export default function SessionStatistics({ data }: Props) {
+export default function StatisticsPanel({ data }: Props) {
   const stats = mapValues(data.today, (s) =>
     parse(prettyMs(s, { compact: true })),
   )
@@ -75,13 +76,15 @@ export default function SessionStatistics({ data }: Props) {
           </span>
         </div>
       </Card>
-      <Card className="rounded-3xl h-44 p-5 flex flex-col justify-between bg-primary shadow-lg select-none cursor-pointer">
-        <Plus className="size-16 text-background" />
-        <span className="text-zinc-200">
-          Start a new <br />
-          work session
-        </span>
-      </Card>
+      <Link href="/active">
+        <Card className="rounded-3xl h-44 p-5 flex flex-col justify-between bg-primary shadow-lg select-none cursor-pointer">
+          <Plus className="size-16 text-background" />
+          <span className="text-zinc-200">
+            Start a new <br />
+            work session
+          </span>
+        </Card>
+      </Link>
     </div>
   )
 }

@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
-import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 interface Tab {
   slug: string
@@ -25,7 +25,7 @@ const tabs: Tab[] = [
 ]
 
 export default function DashboardTabs() {
-  const [active, setActive] = useState<string>('/today')
+  const pathname = usePathname()
 
   return (
     <div className="inline-flex gap-6">
@@ -36,8 +36,9 @@ export default function DashboardTabs() {
         >
           <span
             className={cn(
-              'text-4xl tracking-tighter',
-              active === tab.slug ? 'font-bold' : 'font-semibold text-zinc-300',
+              'text-4xl font-semibold tracking-tighter',
+              'hover:text-primary transition-colors ease',
+              pathname === tab.slug ? 'text-primary' : 'text-zinc-300',
             )}
           >
             {tab.name}
