@@ -31,6 +31,7 @@ import { cn } from '@/lib/utils'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { CommandList } from 'cmdk'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { useConfigStore } from '@/lib/stores/config-store'
 
 const formSchema = z.object({
   username: z
@@ -45,10 +46,14 @@ const formSchema = z.object({
     .toLowerCase(),
   timezone: z
     .string()
-    .refine((val) => timezones.includes(val), 'This is not a valid timezone.'),
+    .refine(
+      (val) => timezones.find((tz) => tz.value),
+      'This is not a valid timezone.',
+    ),
 })
 
 export default function SetupForm() {
+  const config = useConfigStore()
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -59,9 +64,7 @@ export default function SetupForm() {
   })
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
   }
 
@@ -111,9 +114,8 @@ export default function SetupForm() {
                     >
                       <span>
                         {field.value
-                          ? timezones
-                              .find((tz) => tz === field.value)
-                              ?.replaceAll('_', ' ')
+                          ? timezones.find((tz) => tz.value === field.value)
+                              ?.name
                           : 'Select timezone'}
                       </span>
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -122,28 +124,28 @@ export default function SetupForm() {
                 </PopoverTrigger>
                 <PopoverContent className="p-0">
                   <Command>
-                    <CommandInput placeholder="Search language..." />
+                    <CommandInput placeholder="Search timezones..." />
                     <CommandList className="">
                       <ScrollArea className="max-h-[300px] overflow-auto">
-                        <CommandEmpty>No language found.</CommandEmpty>
+                        <CommandEmpty>No timezone found.</CommandEmpty>
                         <CommandGroup>
                           {timezones.map((tz) => (
                             <CommandItem
-                              value={tz}
-                              key={tz}
+                              value={tz.value}
+                              key={tz.value}
                               onSelect={() => {
-                                form.setValue('timezone', tz)
+                                form.setValue('timezone', tz.value)
                               }}
                             >
                               <Check
                                 className={cn(
                                   'mr-2 h-4 w-4',
-                                  tz === field.value
+                                  tz.value === field.value
                                     ? 'opacity-100'
                                     : 'opacity-0',
                                 )}
                               />
-                              {tz.replaceAll('_', ' ')}
+                              {tz.name}
                             </CommandItem>
                           ))}
                         </CommandGroup>
