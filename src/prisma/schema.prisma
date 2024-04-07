@@ -17,6 +17,8 @@ model User {
   id        String    @id
   googleId  String    @unique
   email     String    @unique
+  username  String?   @unique
+  isSetup   Boolean   @default(false)
   firstName String
   lastName  String
   picture   String?
