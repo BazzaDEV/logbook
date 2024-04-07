@@ -5,6 +5,7 @@ import { WorkSession, WorkSessionEvent } from '@prisma/client'
 import db from '@/lib/db'
 import { generateId } from 'lucia'
 import { getUser } from '@/lib/auth'
+import { revalidatePath } from 'next/cache'
 
 export async function createSession(
   data: Pick<WorkSession, 'startTime' | 'notes'>,
@@ -30,6 +31,8 @@ export async function createSession(
       type: 'START',
     },
   })
+
+  revalidatePath(`/${user.username}/today`)
 
   return newSession
 }
@@ -117,6 +120,8 @@ export async function endSession(
       type: 'END',
     },
   })
+
+  revalidatePath(`/${user.username}/today`)
 
   return updatedSession
 }
