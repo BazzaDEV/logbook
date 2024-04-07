@@ -32,6 +32,8 @@ import { Check, ChevronsUpDown } from 'lucide-react'
 import { CommandList } from 'cmdk'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useConfigStore } from '@/lib/stores/config-store'
+import { updateUserDetails } from './actions'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
   username: z
@@ -47,13 +49,15 @@ const formSchema = z.object({
   timezone: z
     .string()
     .refine(
-      (val) => timezones.find((tz) => tz.value),
+      (val) => timezones.find((tz) => tz.value === val),
       'This is not a valid timezone.',
     ),
 })
 
 export default function SetupForm() {
   const config = useConfigStore()
+  const router = useRouter()
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -66,6 +70,19 @@ export default function SetupForm() {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
+    const data = await updateUserDetails(values)
+
+    if ('error' in data) {
+      return form.setError('username', {
+        type: 'custom',
+        message: 'This username is already taken.',
+      })
+    }
+
+    config.setTimezone(values.timezone)
+    console.log(data)
+
+    router.push(`/${data.username}/today`)
   }
 
   return (
@@ -122,10 +139,10 @@ export default function SetupForm() {
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="p-0">
+                <PopoverContent className="p-0 w-[--radix-popover-trigger-width]">
                   <Command>
                     <CommandInput placeholder="Search timezones..." />
-                    <CommandList className="">
+                    <CommandList className="w-full">
                       <ScrollArea className="max-h-[300px] overflow-auto">
                         <CommandEmpty>No timezone found.</CommandEmpty>
                         <CommandGroup>

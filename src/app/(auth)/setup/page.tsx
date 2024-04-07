@@ -14,9 +14,10 @@ export default async function Page() {
   }
 
   return (
-    <div className="flex flex-col h-full gap-8 max-w-screen-sm justify-center mx-auto">
-      <h1 className="text-4xl font-semibold tracking-tighter">
-        We need a few more details.
+    <div className="p-4 flex flex-col h-full gap-8 max-w-screen-sm justify-center mx-auto">
+      <h1 className="text-4xl font-semibold tracking-tighter flex flex-col gap-2">
+        <span className="text-zinc-300">{`You're almost done.`}</span>
+        <span>We just need a few more details.</span>
       </h1>
       <SetupForm />
     </div>
