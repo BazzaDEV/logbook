@@ -19,8 +19,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { useConfigStore } from '@/lib/stores/config-store'
-
-const timeZones = Intl.supportedValuesOf('timeZone')
+import { timezones } from '@/lib/constants'
 
 export default function TimezoneCombobox() {
   const [open, setOpen] = React.useState(false)
@@ -39,7 +38,7 @@ export default function TimezoneCombobox() {
           className="w-fit h-0 justify-between"
         >
           {config.tz
-            ? timeZones.find((tz) => config.tz === tz)
+            ? timezones.find((tz) => config.tz === tz)
             : 'Select timezone...'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -53,7 +52,7 @@ export default function TimezoneCombobox() {
           <CommandList>
             <CommandEmpty>No timezones found.</CommandEmpty>
             <CommandGroup>
-              {timeZones.map((tz) => (
+              {timezones.map((tz) => (
                 <CommandItem
                   key={tz}
                   value={tz}
