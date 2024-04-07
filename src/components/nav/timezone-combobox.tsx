@@ -38,7 +38,7 @@ export default function TimezoneCombobox() {
           className="w-fit h-0 justify-between"
         >
           {config.tz
-            ? timezones.find((tz) => config.tz === tz)
+            ? timezones.find((tz) => config.tz === tz.value)?.name
             : 'Select timezone...'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -54,8 +54,8 @@ export default function TimezoneCombobox() {
             <CommandGroup>
               {timezones.map((tz) => (
                 <CommandItem
-                  key={tz}
-                  value={tz}
+                  key={tz.value}
+                  value={tz.value}
                   onSelect={(val) => {
                     config.setTimezone(val)
                     setOpen(false)
@@ -64,10 +64,10 @@ export default function TimezoneCombobox() {
                   <Check
                     className={cn(
                       'mr-2 h-4 w-4',
-                      config.tz === tz ? 'opacity-100' : 'opacity-0',
+                      config.tz === tz.value ? 'opacity-100' : 'opacity-0',
                     )}
                   />
-                  {tz}
+                  {tz.name}
                 </CommandItem>
               ))}
             </CommandGroup>
