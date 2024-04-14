@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Check, ChevronsUpDown } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
@@ -20,10 +20,36 @@ import {
 } from '@/components/ui/popover'
 import { useConfigStore } from '@/lib/stores/config-store'
 import { timezones } from '@/lib/constants'
+import { updateTimezone } from './actions'
+import { toast } from 'sonner'
 
 export default function TimezoneCombobox() {
   const [open, setOpen] = useState(false)
   const config = useConfigStore()
+
+  async function onTimezoneSelect(val: string) {
+    const res = await updateTimezone({ timezone: val })
+
+    if ('error' in res) {
+      return toast.error('Timezone has not been updated.', {
+        description: res.error,
+      })
+    }
+
+    config.setTimezone(res.timezone)
+    setOpen(false)
+
+    toast.success('Timezone has been updated.', {
+      description: `Your new timezone is ${timezones.find((tz) => tz.value === res.timezone)?.name}.`,
+    })
+  }
+
+  useEffect(() => {
+    // Only run this when the component first loads
+    console.log('Loading tz from database...')
+    config.fetch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Popover
@@ -58,10 +84,7 @@ export default function TimezoneCombobox() {
                 <CommandItem
                   key={tz.value}
                   value={tz.value}
-                  onSelect={(val) => {
-                    config.setTimezone(val)
-                    setOpen(false)
-                  }}
+                  onSelect={onTimezoneSelect}
                 >
                   <Check
                     className={cn(
