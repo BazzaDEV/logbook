@@ -1,13 +1,13 @@
 import { getUserOrRedirect } from '@/lib/auth'
-import { getTodaySessions } from './actions'
 import { dist, totalTimePaused } from '@/lib/utils'
 import StatisticsPanel from './statistics-panel'
 import SessionsList from './sessions-list'
+import { getSessionsFromToday } from '@/lib/api/sessions'
 
 export default async function Page() {
-  const user = await getUserOrRedirect()
+  await getUserOrRedirect()
 
-  const sessions = await getTodaySessions({ id: user.id })
+  const sessions = await getSessionsFromToday()
   const completedSessions = sessions.filter((s) => s.endTime !== null)
 
   const statistics = {

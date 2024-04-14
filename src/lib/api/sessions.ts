@@ -1,11 +1,51 @@
 'use server'
 
-import 'server-only'
 import { WorkSession, WorkSessionEvent } from '@prisma/client'
 import db from '@/lib/db'
 import { generateId } from 'lucia'
 import { getUser } from '@/lib/auth'
 import { revalidatePath } from 'next/cache'
+import { fromZonedTime } from 'date-fns-tz'
+import { add, set } from 'date-fns'
+
+export async function getSessionsFromToday() {
+  const user = await getUser()
+
+  if (!user) {
+    throw new Error('Not authenticated')
+  }
+
+  const { id: userId, timezone } = user
+
+  const serverNow = new Date()
+
+  const userNow = fromZonedTime(serverNow, timezone)
+
+  const userMidnight = set(userNow, { hours: 0, minutes: 0, seconds: 0 })
+  const userNextMidnight = add(userMidnight, { hours: 24 })
+
+  const filteredSessions = await db.workSession.findMany({
+    where: {
+      userId,
+      startTime: {
+        gte: userMidnight,
+        lt: userNextMidnight,
+      },
+    },
+    include: {
+      events: {
+        orderBy: {
+          time: 'asc',
+        },
+      },
+    },
+    orderBy: {
+      startTime: 'asc',
+    },
+  })
+
+  return filteredSessions
+}
 
 export async function createSession(
   data: Pick<WorkSession, 'startTime' | 'notes'>,
