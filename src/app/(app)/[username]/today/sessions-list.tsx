@@ -5,8 +5,6 @@ import { cn } from '@/lib/utils'
 import { WorkSession } from '@prisma/client'
 import { ArrowRight } from 'lucide-react'
 import { HTMLAttributes } from 'react'
-import { toZonedTime } from 'date-fns-tz'
-import { isToday } from 'date-fns'
 import { useConfigStore } from '@/lib/stores/config-store'
 import { Badge } from '@/components/ui/badge'
 
@@ -49,15 +47,9 @@ interface Props {
 
 export default function SessionsList({ sessions }: Props) {
   const config = useConfigStore()
-  const today = sessions.filter(({ startTime }) => {
-    // Convert UTC date to the local timezone
-    const localTime = toZonedTime(startTime, config.tz)
-    // Check if the converted date is today
-    return isToday(localTime)
-  })
   return (
     <div className="flex flex-col gap-1">
-      {today.map((s, i) => (
+      {sessions.map((s, i) => (
         <SessionListItem
           key={s.id}
           index={i + 1}
