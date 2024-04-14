@@ -1,6 +1,6 @@
 'use client'
 
-import * as React from 'react'
+import { useState } from 'react'
 import { Check, ChevronsUpDown } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
@@ -19,11 +19,10 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { useConfigStore } from '@/lib/stores/config-store'
-
-const timeZones = Intl.supportedValuesOf('timeZone')
+import { timezones } from '@/lib/constants'
 
 export default function TimezoneCombobox() {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
   const config = useConfigStore()
 
   return (
@@ -36,11 +35,13 @@ export default function TimezoneCombobox() {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-fit h-0 justify-between"
+          className="w-fit h-0 justify-between text-xs"
         >
-          {config.tz
-            ? timeZones.find((tz) => config.tz === tz)
-            : 'Select timezone...'}
+          <span>
+            {config.tz
+              ? timezones.find((tz) => config.tz === tz.value)?.name
+              : 'Select timezone...'}
+          </span>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -53,10 +54,10 @@ export default function TimezoneCombobox() {
           <CommandList>
             <CommandEmpty>No timezones found.</CommandEmpty>
             <CommandGroup>
-              {timeZones.map((tz) => (
+              {timezones.map((tz) => (
                 <CommandItem
-                  key={tz}
-                  value={tz}
+                  key={tz.value}
+                  value={tz.value}
                   onSelect={(val) => {
                     config.setTimezone(val)
                     setOpen(false)
@@ -65,10 +66,10 @@ export default function TimezoneCombobox() {
                   <Check
                     className={cn(
                       'mr-2 h-4 w-4',
-                      config.tz === tz ? 'opacity-100' : 'opacity-0',
+                      config.tz === tz.value ? 'opacity-100' : 'opacity-0',
                     )}
                   />
-                  {tz}
+                  {tz.name}
                 </CommandItem>
               ))}
             </CommandGroup>

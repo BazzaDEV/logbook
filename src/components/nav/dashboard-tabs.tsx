@@ -12,20 +12,21 @@ interface Tab {
 const tabs: Tab[] = [
   {
     name: 'Today',
-    slug: '/today',
+    slug: 'today',
   },
   {
     name: 'Past Sessions',
-    slug: '/sessions',
+    slug: 'sessions',
   },
   {
     name: 'Active Session',
-    slug: '/active',
+    slug: 'active',
   },
 ]
 
 export default function DashboardTabs() {
   const pathname = usePathname()
+  const subpath = pathname.split('/').at(-1)
 
   return (
     <div className="inline-flex gap-6">
@@ -38,7 +39,7 @@ export default function DashboardTabs() {
             className={cn(
               'text-4xl font-semibold tracking-tighter',
               'hover:text-primary transition-colors ease',
-              pathname === tab.slug ? 'text-primary' : 'text-zinc-300',
+              subpath === tab.slug ? 'text-primary' : 'text-zinc-300',
             )}
           >
             {tab.name}
