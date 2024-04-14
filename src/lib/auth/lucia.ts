@@ -28,6 +28,7 @@ export const lucia = new Lucia(adapter, {
       lastName: attributes.lastName,
       picture: attributes.picture,
       isSetup: attributes.isSetup,
+      timezone: attributes.timezone,
     }
   },
 })
@@ -48,4 +49,5 @@ interface DatabaseUserAttributes {
   lastName: string
   picture: string | null
   isSetup: boolean
+  timezone: string
 }
