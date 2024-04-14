@@ -22,7 +22,7 @@ export default async function Page() {
   const { user } = await validateRequest()
 
   if (user && !user.isSetup) {
-    return redirect(`/auth/setup`)
+    return redirect(`/setup`)
   }
 
   if (user) {
