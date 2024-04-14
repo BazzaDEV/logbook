@@ -19,6 +19,7 @@ model User {
   email     String    @unique
   username  String?   @unique
   isSetup   Boolean   @default(false)
+  timezone  String    @default("America/New_York")
   firstName String
   lastName  String
   picture   String?

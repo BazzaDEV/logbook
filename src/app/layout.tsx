@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import '@/app/globals.css'
 import { inter } from '@/lib/fonts'
 import { cn } from '@/lib/utils'
+import { Toaster } from '@/components/ui/sonner'
 
 export const metadata: Metadata = {
   title: 'Logbook',
@@ -17,6 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(inter.className, 'min-h-screen h-screen')}>
         {children}
+        <Toaster richColors />
       </body>
     </html>
   )

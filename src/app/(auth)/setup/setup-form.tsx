@@ -73,10 +73,21 @@ export default function SetupForm() {
     const data = await updateUserDetails(values)
 
     if ('error' in data) {
-      return form.setError('username', {
-        type: 'custom',
-        message: 'This username is already taken.',
-      })
+      if (data.error instanceof String) {
+        // If error is just a string, log it to console?
+        // TODO: Show a toast or alert instead
+        console.log(data.error)
+      } else {
+        // Set error for each form field
+        for (const [field, error] of Object.entries(data.error)) {
+          form.setError(field as any, {
+            type: 'custom',
+            message: error,
+          })
+        }
+      }
+
+      return
     }
 
     config.setTimezone(values.timezone)
