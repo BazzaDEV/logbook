@@ -38,8 +38,12 @@ const CTA = () => (
 export default async function Page() {
   const { user } = await validateRequest()
 
+  if (user && !user.isSetup) {
+    return redirect(`/auth/setup`)
+  }
+
   if (user) {
-    return redirect('/today')
+    return redirect(`/${user.username}/today`)
   }
 
   return (
