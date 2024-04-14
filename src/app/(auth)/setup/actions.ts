@@ -3,11 +3,12 @@
 import { getUser } from '@/lib/auth'
 import db from '@/lib/db'
 import { User } from '@prisma/client'
+import { timeZonesNames as tzNames } from '@vvo/tzdb'
 
-type ErrorResult = { error: string }
+type ErrorResult = { error: string | Record<string, string> }
 
 export async function updateUserDetails(
-  data: Pick<User, 'username'>,
+  data: Pick<User, 'username' | 'timezone'>,
 ): Promise<User | ErrorResult> {
   const user = await getUser()
 
@@ -25,7 +26,17 @@ export async function updateUserDetails(
 
   if (existingUser) {
     return {
-      error: 'This username is already taken.',
+      error: {
+        username: 'This username is already taken.',
+      },
+    }
+  }
+
+  if (!tzNames.includes(data.timezone)) {
+    return {
+      error: {
+        timezone: 'This is not a valid timezone.',
+      },
     }
   }
 
@@ -35,6 +46,7 @@ export async function updateUserDetails(
     },
     data: {
       username: data.username,
+      timezone: data.timezone,
       isSetup: true,
     },
   })
