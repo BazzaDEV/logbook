@@ -60,7 +60,7 @@ export async function GET(request: Request): Promise<Response> {
         status: 302,
         headers: {
           Location: existingUser.isSetup
-            ? `/${existingUser.username}`
+            ? `/${existingUser.username}/today`
             : '/setup',
         },
       })
