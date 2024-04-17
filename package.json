@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "build:vercel": "prisma generate && prisma migrate deploy && next build"
+    "build:vercel": "prisma generate && prisma migrate deploy && next build",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "prisma": {
     "schema": "src/prisma/schema.prisma"
@@ -35,6 +37,7 @@
     "@tiptap/react": "^2.2.4",
     "@tiptap/starter-kit": "^2.2.4",
     "@types/lodash.mapvalues": "^4.6.9",
+    "@vvo/tzdb": "^6.131.0",
     "arctic": "^1.5.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
@@ -47,6 +50,7 @@
     "lucia": "^3.1.1",
     "lucide-react": "^0.363.0",
     "next": "14.1.4",
+    "next-themes": "^0.3.0",
     "oslo": "^1.2.0",
     "pretty-ms": "^9.0.0",
     "react": "^18",
@@ -55,12 +59,16 @@
     "sass": "^1.72.0",
     "server-only": "^0.0.1",
     "sharp": "^0.33.3",
+    "sonner": "^1.4.41",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^15.0.2",
+    "@types/jest": "^29.5.12",
     "@types/lodash.debounce": "^4.0.9",
     "@types/lodash.head": "^4.0.9",
     "@types/node": "^20",
@@ -70,11 +78,14 @@
     "eslint": "^8",
     "eslint-config-next": "14.1.4",
     "eslint-config-prettier": "^9.1.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.13",
     "prisma": "^5.12.1",
     "tailwindcss": "^3.3.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }

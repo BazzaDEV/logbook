@@ -76,7 +76,7 @@ export default function StatisticsPanel({ data }: Props) {
           </span>
         </div>
       </Card>
-      <Link href="/active">
+      <Link href="active">
         <Card className="rounded-3xl h-44 p-5 flex flex-col justify-between bg-primary shadow-lg select-none cursor-pointer">
           <Plus className="size-16 text-background" />
           <span className="text-zinc-200">
