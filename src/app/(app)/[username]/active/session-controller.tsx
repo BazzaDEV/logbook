@@ -3,6 +3,26 @@
 import Editor, { defaultExtensions } from '@/components/editor/editor'
 import { JSONContent, Editor as TiptapEditor } from '@tiptap/react'
 import { WorkSession, WorkSessionEvent } from '@prisma/client'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { useActiveSessionStore } from '@/lib/stores/active-session-store'
+import { useCallback, useEffect, useState } from 'react'
+import {
+  createSession,
+  endSession,
+  pauseSession,
+  resumeSession,
+  updateSessionNotes,
+} from '@/lib/api/sessions'
+import Stopwatch from '@/components/session/stopwatch'
+import { useDebounceCallback } from '@/lib/hooks/use-debounce'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 
 function calcStopwatch(elapsedSeconds: number) {
   const elapsedMins = elapsedSeconds / 60
@@ -51,7 +71,6 @@ export default function SessionController({ session }: Props) {
       new TiptapEditor({
         extensions: [...defaultExtensions],
         ...(session?.notes && { content: JSON.parse(session.notes) }),
-        content: editor?.getJSON(),
         onUpdate: ({ editor }) => {
           if (sessionId) {
             updateNotes(editor.getJSON())
@@ -82,27 +101,6 @@ export default function SessionController({ session }: Props) {
     </div>
   )
 }
-
-import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
-import { useActiveSessionStore } from '@/lib/stores/active-session-store'
-import { useCallback, useEffect, useState } from 'react'
-import {
-  createSession,
-  endSession,
-  pauseSession,
-  resumeSession,
-  updateSessionNotes,
-} from '@/lib/api/sessions'
-import Stopwatch from '@/components/session/stopwatch'
-import { useDebounceCallback } from '@/lib/hooks/use-debounce'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
 
 //********* Controls ***********//
 
