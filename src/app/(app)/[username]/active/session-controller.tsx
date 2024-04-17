@@ -71,7 +71,6 @@ export default function SessionController({ session }: Props) {
       new TiptapEditor({
         extensions: [...defaultExtensions],
         ...(session?.notes && { content: JSON.parse(session.notes) }),
-        content: editor?.getJSON(),
         onUpdate: ({ editor }) => {
           if (sessionId) {
             updateNotes(editor.getJSON())
