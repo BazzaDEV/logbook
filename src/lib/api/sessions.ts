@@ -17,7 +17,7 @@ export async function getSessionsFromToday() {
 
   const { id: userId, timezone } = user
 
-  const serverNow = new Date()
+  const serverNow = new Date().getTime()
 
   const userNow = fromZonedTime(serverNow, timezone)
 
