@@ -5,7 +5,7 @@ import db from '@/lib/db'
 import { generateId } from 'lucia'
 import { getUser } from '@/lib/auth'
 import { revalidatePath } from 'next/cache'
-import { fromZonedTime } from 'date-fns-tz'
+import { fromZonedTime, toZonedTime } from 'date-fns-tz'
 import { add, set } from 'date-fns'
 
 export async function getSessionsFromToday() {
@@ -17,19 +17,22 @@ export async function getSessionsFromToday() {
 
   const { id: userId, timezone } = user
 
-  const serverNow = new Date().getTime()
+  const serverNow = new Date()
 
-  const userNow = fromZonedTime(serverNow, timezone)
+  const userNow = toZonedTime(serverNow, timezone)
 
   const userMidnight = set(userNow, { hours: 0, minutes: 0, seconds: 0 })
   const userNextMidnight = add(userMidnight, { hours: 24 })
+
+  const userMidnightUTC = fromZonedTime(userMidnight, timezone)
+  const userNextMidnightUTC = fromZonedTime(userNextMidnight, timezone)
 
   const filteredSessions = await db.workSession.findMany({
     where: {
       userId,
       startTime: {
-        gte: userMidnight,
-        lt: userNextMidnight,
+        gte: userMidnightUTC,
+        lt: userNextMidnightUTC,
       },
     },
     include: {
@@ -43,6 +46,8 @@ export async function getSessionsFromToday() {
       startTime: 'asc',
     },
   })
+
+  console.log(filteredSessions)
 
   return filteredSessions
 }
