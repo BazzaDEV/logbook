@@ -170,3 +170,22 @@ export async function endSession(
 
   return updatedSession
 }
+
+export async function deleteSession(data: Pick<WorkSession, 'id'>) {
+  const user = await getUser()
+
+  if (!user) {
+    throw new Error('Not authenticated')
+  }
+
+  const deletedSession = await db.workSession.delete({
+    where: {
+      id: data.id,
+      userId: user.id,
+    },
+  })
+
+  revalidatePath(`/${user.username}/today`)
+
+  return deletedSession
+}
