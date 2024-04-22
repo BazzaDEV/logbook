@@ -44,6 +44,7 @@
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
     "date-fns-tz": "^3.0.0",
+    "framer-motion": "^11.1.7",
     "lodash.debounce": "^4.0.8",
     "lodash.head": "^4.0.1",
     "lodash.mapvalues": "^4.6.0",
